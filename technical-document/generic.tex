@@ -28,33 +28,63 @@
 %% Use color by names
 \usepackage[usenames]{color}
 %% Customized colors
-\definecolor{comment-green}{RGB}{0, 128, 0}
+\definecolor{comment-green}{RGB}{0, 102, 0}
 
 % SI units
 \usepackage[amssymb]{SIunits}
 
 % Typesetting source code
 \usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{comment-green},
+  stringstyle=\color{magenta},
+  columns=fullflexible,
+  frame=single,
+  breaklines=true,
+  postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+}
+
+% in the document preamble
+ \usepackage[stable]{footmisc}
 
 % Hyperref support
 \ifthenelse{\(\isundefined\pdfoutput\)\OR\(\pdfoutput < 1\)}
 {\usepackage[dvipdfm, CJKbookmarks=true, bookmarksopen=true,
-bookmarksnumbered=true, colorlinks=true, hyperindex=true, plainpages=false,
-pdfpagelabels=true]{hyperref}}
-{\usepackage[pdftex, CJKbookmarks=true, bookmarksopen=true,
-bookmarksnumbered=true, colorlinks=true, hyperindex=true, plainpages=false,
-pdfpagelabels=true]{hyperref}}
+bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false,
+pdfpagelabels=true, destlabel=true]{hyperref}}
+{\usepackage[pdftex, unicode=true, bookmarksopen=true,
+bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false,
+pdfpagelabels=true, destlabel=true]{hyperref}}
+\hypersetup{
+        pdfnewwindow=true
+}
 
 % Bibliography
 \bibliographystyle{alpha}
 
+% Let "paragraph" be the 4-th level heading.
+\usepackage{titlesec}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
 % Four kinds of emphasis style
-\newcommand{\empha}[1]{\textcolor{red}{#1}}
-\newcommand{\emphb}[1]{\textcolor{green}{#1}}
-\newcommand{\emphc}[1]{\textcolor{orange}{#1}}
-\newcommand{\emphd}[1]{\textcolor{blue}{#1}}
+\newcommand{\emphr}[1]{\textcolor{red}{#1}}
+\newcommand{\emphg}[1]{\textcolor{comment-green}{#1}}
+\newcommand{\empho}[1]{\textcolor{orange}{#1}}
+\newcommand{\emphb}[1]{\textcolor{blue}{#1}}
 \newcommand{\alert}[1]{\textcolor{red}{\textbf{#1}}}
 \newcommand{\comment}[1]{\textcolor{comment-green}{#1}}
+
+\newcommand{\greencomment}[1]{\comment{$\triangleright$ #1}}
+\newcommand{\redcomment}[1]{\emphr{$\triangleright$ #1}}
+\newcommand{\bluecomment}[1]{\emphb{$\triangleright$ #1}}
+\newcommand{\alertcomment}[1]{\alert{$\triangleright$ #1}}
 
 % Emphasis with box frame
 %% Used in normal context
