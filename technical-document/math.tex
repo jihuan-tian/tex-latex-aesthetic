@@ -28,9 +28,6 @@
 % =: (\eqqcolon), etc.
 \usepackage{mathtools}
 
-% Specify math font
-%% Use Concrete Italic + Concmath symbols (MetaFont) for math
-\usepackage{concmath}
 % For typesetting matrices with dashed separation lines
 \usepackage{pmat}
 %% Enlarge the default number of allowed columns in matrix environment
@@ -91,7 +88,11 @@
 \DeclareMathOperator{\rhs}{RHS} % Right hand side
 \DeclareMathOperator{\argmax}{argmax}
 \DeclareMathOperator{\argmin}{argmin}
-\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\esssup}{ess\,sup}
+\DeclareMathOperator{\essinf}{ess\,inf}
+\DeclareMathOperator{\kernel}{ker} % The kernel set of a map
+\DeclareMathOperator{\image}{Im}  % The image set of a map
+\DeclareMathOperator{\diam}{diam} % Diameter of a domain or a set
 
 \mathchardef\ordinarycolon\mathcode`\:
 \mathcode`\:=\string"8000
@@ -105,10 +106,15 @@
 %% together with the option amsmath when the amsmath package has been loaded.
 %% thref: enables the extended reference features.
 \usepackage{framed}
-\usepackage[standard, framed, amsmath, hyperref, thmmarks, thref]{ntheorem}
-% Define new mathematical environment.
-\newtheorem{mynote}{Note}
-\newtheorem{mycomment}{Comment}
+\makeatletter
+\@ifclassloaded{beamer}{}
+{
+  %% When the document class is not beamer, define the following theorem environments.
+  \usepackage[standard, framed, amsmath, hyperref, thmmarks, thref]{ntheorem}
+  % Define new mathematical environment.
+  \newtheorem{mynote}{Note}
+  \newtheorem{mycomment}{Comment}
+}
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pseudocode typesetting

@@ -16,14 +16,43 @@
 %% Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 %%  
 
-% Specify font encoding
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\documentclass[hyperref, 10pt, c]{beamer}
 
-% Use Palatino font
-% \usepackage{pxfonts}
-% Use Helvetia font
-% \usepackage{helvet}
-% Specify math font. Use Concrete Italic + Concmath symbols (MetaFont) for math. This will also
-% influence the normal text font.
-\usepackage{concmath}
+\input{tjh-beamer-preamble}
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Subject property of this PDF document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subject{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Test}
+\subtitle{test}
+\author{Jihuan Tian}
+\institute{jihuan\_tian@hotmail.com}
+\date{2022-07-03}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Title Page
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[plain, t]
+  \titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Table of Contents
+%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \frametitle{Contents}
+  \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sections start from here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

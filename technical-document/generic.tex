@@ -17,21 +17,61 @@
 %%  
 
 \usepackage{ifthen}
-% Figures
-\ifthenelse{\(\isundefined\pdfoutput\)\OR\(\pdfoutput < 1\)}
-{\usepackage[dvips]{graphicx}}
-{\usepackage[pdftex]{graphicx}}
-%% For subfigure typesetting
-\usepackage{subfigure}
 
-% Color
-%% Use color by names
-\usepackage[usenames]{color}
+\makeatletter
+\@ifclassloaded{beamer}{
+  %% Configuration for the beamer class.
+}{
+  %% Configuration for other classes.
+  
+  \ifthenelse{\(\isundefined\pdfoutput\)\OR\(\pdfoutput < 1\)}{
+    %% When the PDF output is not enabled.
+    \usepackage[dvips]{graphicx}
+    \usepackage[dvipdfm, bookmarksopen=true, bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false, pdfpagelabels=true, destlabel=true]{hyperref}
+  }{
+    %% When the PDF output is enabled.
+    \usepackage[pdftex]{graphicx}
+    %% For subfigure typesetting
+    \usepackage{subfigure}
+
+    \usepackage[pdftex, unicode=true, bookmarksopen=true, bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false, pdfpagelabels=true, destlabel=true]{hyperref}
+  }
+
+  \hypersetup{
+    pdfnewwindow=true
+  }
+
+  %% Use color by names
+  \usepackage[usenames]{xcolor}
+
+  % Let "paragraph" be the 4-th level heading.
+  \usepackage{titlesec}
+  \setcounter{secnumdepth}{4}
+  \setcounter{tocdepth}{4}
+  \titleformat{\paragraph}
+  {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+  \titlespacing*{\paragraph}
+  {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+}
+\makeatother
+
 %% Customized colors
 \definecolor{comment-green}{RGB}{0, 102, 0}
+\definecolor{solarized-yellow}{RGB}{246, 240, 222}
+\definecolor{code-hl}{RGB}{204, 255, 255}
+
+% Highlight color
+\usepackage{soul}
+\sethlcolor{code-hl}
 
 % SI units
 \usepackage[amssymb]{SIunits}
+
+% Typesetting chemistry
+\usepackage{mhchem}
+
+% For typesetting the tilde symbol in normal text.
+\usepackage{textcomp}
 
 % Typesetting source code
 \usepackage{listings}
@@ -45,42 +85,41 @@
   breaklines=true,
   postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 }
+% Define an empty language which is responsible for typesetting text-mode source
+% code block in Emacs.
+\lstdefinelanguage{Text}{}
 
 % in the document preamble
  \usepackage[stable]{footmisc}
 
-% Hyperref support
-\ifthenelse{\(\isundefined\pdfoutput\)\OR\(\pdfoutput < 1\)}
-{\usepackage[dvipdfm, CJKbookmarks=true, bookmarksopen=true,
-bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false,
-pdfpagelabels=true, destlabel=true]{hyperref}}
-{\usepackage[pdftex, unicode=true, bookmarksopen=true,
-bookmarksnumbered=true, colorlinks=true, citecolor=blue, hyperindex=true, plainpages=false,
-pdfpagelabels=true, destlabel=true]{hyperref}}
-\hypersetup{
-        pdfnewwindow=true
-}
-
 % Bibliography
-\bibliographystyle{alpha}
+\makeatletter
+\@ifclassloaded{beamer}{
+  \bibliographystyle{alpha}
+}{
+  \usepackage[round, authoryear]{natbib}
+  \bibliographystyle{plainnat}}
+\makeatother
 
-% Let "paragraph" be the 4-th level heading.
-\usepackage{titlesec}
-\setcounter{secnumdepth}{4}
-\setcounter{tocdepth}{4}
-\titleformat{\paragraph}
-{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
-\titlespacing*{\paragraph}
-{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+% Several symbols used for writing draft
+\usepackage{bbding}
+\newcommand{\outline}[1]{\noindent \textcolor{blue}{\NibSolidRight\;#1}}
+\usepackage{fontawesome}
+\newcommand{\draft}[1]{\noindent \textcolor{comment-green}{\faCommenting\;#1}}
+\newcommand{\todo}[1]{\noindent \textcolor{red}{\faCalendar\;#1}}
 
 % Four kinds of emphasis style
 \newcommand{\emphr}[1]{\textcolor{red}{#1}}
 \newcommand{\emphg}[1]{\textcolor{comment-green}{#1}}
 \newcommand{\empho}[1]{\textcolor{orange}{#1}}
 \newcommand{\emphb}[1]{\textcolor{blue}{#1}}
-\newcommand{\alert}[1]{\textcolor{red}{\textbf{#1}}}
 \newcommand{\comment}[1]{\textcolor{comment-green}{#1}}
-
+\makeatletter
+\@ifclassloaded{beamer}{}
+{
+  \newcommand{\alert}[1]{\textcolor{red}{\textbf{#1}}}
+}
+\makeatother
 \newcommand{\greencomment}[1]{\comment{$\triangleright$ #1}}
 \newcommand{\redcomment}[1]{\emphr{$\triangleright$ #1}}
 \newcommand{\bluecomment}[1]{\emphb{$\triangleright$ #1}}
@@ -98,8 +137,26 @@ pdfpagelabels=true, destlabel=true]{hyperref}}
     \color{red}\boxed{{\color{black}#1}}}}
 \newcommand{\emboxm}[1]{{\setlength{\fboxrule}{.4mm}\boxed{#1}}}
 
+% % Automatically hyphenate within \texttt.
+% % Ref: https://tex.stackexchange.com/questions/44361/how-to-automatically-hyphenate-within-texttt
+% \makeatletter
+% \DeclareRobustCommand\ttfamily
+%         {\not@math@alphabet\ttfamily\mathtt
+%          \fontfamily\ttdefault\selectfont\hyphenchar\font=-1\relax}
+% \makeatother
+% \DeclareTextFontCommand{\mytexttt}{\ttfamily\hyphenchar\font=`\_\relax}
+\let\oldtexttt\texttt
+\renewcommand{\texttt}[1]{\oldtexttt{\hl{#1}}}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Self-defined miscellaneous commands
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % et al
 \newcommand{\etal}{{\it et al}}
+
+% Creative commons license
+\newcommand{\cclic}{This work is licensed under a \href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License}. Copyright \copyright\ \the\year\ \href{mailto:jihuan_tian@hotmail.com}{Jihuan Tian}. All rights reserved.}
+\newcommand{\cclicy}[1]{This work is licensed under a \href{http://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License}. Copyright \copyright\ #1\ \href{mailto:jihuan_tian@hotmail.com}{Jihuan Tian}. All rights reserved.}
+
+% Email
+\newcommand{\myemail}{\href{mailto:jihuan_tian@hotmail.com}{jihuan\_tian@hotmail.com}}

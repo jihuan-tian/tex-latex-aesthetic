@@ -16,14 +16,21 @@
 %% Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 %%  
 
-% Specify font encoding
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+% Load configurations
+\input{generic}
+\input{font-selection-beamer}
+\input{math}
 
-% Use Palatino font
-% \usepackage{pxfonts}
-% Use Helvetia font
-% \usepackage{helvet}
-% Specify math font. Use Concrete Italic + Concmath symbols (MetaFont) for math. This will also
-% influence the normal text font.
-\usepackage{concmath}
+\useoutertheme{default}
+\useinnertheme{circles}
+\usecolortheme{spruce}
+\usecolortheme{rose}
+
+\AtBeginSection[]%
+{%
+\begin{frame}[plain]%
+  \begin{center}%
+    \usebeamerfont{section title}\insertsection%
+  \end{center}%
+\end{frame}%
+}
